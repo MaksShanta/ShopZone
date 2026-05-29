@@ -5,9 +5,12 @@
         ShopZone
       </RouterLink>
 
-      <button class="rounded bg-green-700 px-4 py-2 hover:bg-green-800">
+      <RouterLink
+        to="/catalog"
+        class="rounded bg-green-700 px-4 py-2 hover:bg-green-800"
+      >
         Каталог
-      </button>
+      </RouterLink>
 
       <input
         type="text"
@@ -15,16 +18,24 @@
         class="flex-1 rounded px-4 py-2 text-black outline-none"
       />
 
-      <RouterLink to="/catalog" class="hover:underline">
-        Товари
-      </RouterLink>
-
       <RouterLink to="/cart" class="hover:underline">
         Кошик
       </RouterLink>
 
-      <RouterLink to="/login" class="hover:underline">
+      <RouterLink
+        v-if="!authStore.isLoggedIn"
+        to="/login"
+        class="hover:underline"
+      >
         Увійти
+      </RouterLink>
+
+      <RouterLink
+        v-else
+        to="/profile"
+        class="hover:underline"
+      >
+        Профіль
       </RouterLink>
     </div>
   </header>
@@ -32,4 +43,7 @@
 
 <script setup>
 import { RouterLink } from 'vue-router'
+import { useAuthStore } from '../stores/authStore'
+
+const authStore = useAuthStore()
 </script>
