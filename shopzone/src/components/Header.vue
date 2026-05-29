@@ -19,7 +19,7 @@
       />
 
       <RouterLink to="/cart" class="hover:underline">
-        Кошик
+        Кошик ({{ cartStore.totalItems }})
       </RouterLink>
 
       <RouterLink
@@ -42,8 +42,18 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
+
 import { useAuthStore } from '../stores/authStore'
+import { useCartStore } from '../stores/cartStore'
 
 const authStore = useAuthStore()
+const cartStore = useCartStore()
+
+onMounted(() => {
+  if (authStore.user) {
+    cartStore.fetchCart(authStore.user.uid)
+  }
+})
 </script>

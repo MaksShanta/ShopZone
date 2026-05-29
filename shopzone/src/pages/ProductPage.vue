@@ -36,29 +36,16 @@
           Рейтинг: ⭐ {{ productStore.currentProduct.rating }}
         </p>
 
-        <p
-          class="mb-4"
-          :class="productStore.currentProduct.inStock ? 'text-green-600' : 'text-red-600'"
-        >
-          {{ productStore.currentProduct.inStock ? 'Є в наявності' : 'Немає в наявності' }}
-        </p>
-
-        <p
-          v-if="productStore.currentProduct.oldPrice"
-          class="text-gray-400 line-through"
-        >
-          {{ productStore.currentProduct.oldPrice }} грн
-        </p>
-
         <p class="mb-5 text-3xl font-bold text-green-600">
           {{ productStore.currentProduct.price }} грн
         </p>
 
         <button
+          @click="handleAddToCart"
           class="rounded bg-green-600 px-6 py-3 text-white hover:bg-green-700 disabled:bg-gray-400"
-          :disabled="!productStore.currentProduct.inStock"
+          :disabled="cartStore.loading"
         >
-          Додати в кошик
+          {{ cartStore.loading ? 'Додавання...' : 'Додати в кошик' }}
         </button>
       </div>
     </div>
@@ -67,13 +54,34 @@
 
 <script setup>
 import { onMounted } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
+
 import { useProductStore } from '../stores/productStore'
+import { useAuthStore } from '../stores/authStore'
+import { useCartStore } from '../stores/cartStore'
 
 const route = useRoute()
-const productStore = useProductStore()
+const router = useRouter()
 
-onMounted(() => {
-  productStore.fetchProductById(route.params.id)
+const productStore = useProductStore()
+const authStore = useAuthStore()
+const cartStore = useCartStore()
+
+onMounted(async () => {
+  await productStore.fetchProductById(route.params.id)
 })
+
+async function handleAddToCart() {
+  if (!authStore.isLoggedIn) {
+    router.push('/login')
+    return
+  }
+
+  await cartStore.addToCart(
+    authStore.user.uid,
+    productStore.currentProduct
+  )
+
+  router.push('/cart')
+}
 </script>

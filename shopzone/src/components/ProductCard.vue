@@ -39,21 +39,37 @@
     </p>
 
     <button
-      class="mt-4 w-full rounded bg-green-600 py-2 text-white hover:bg-green-700 disabled:bg-gray-400"
-      :disabled="!product.inStock"
+    @click="handleAddToCart"
+    class="mt-4 w-full rounded bg-green-600 py-2 text-white hover:bg-green-700 disabled:bg-gray-400"
+    :disabled="!product.inStock || cartStore.loading"
     >
-      Додати в кошик
+    {{ cartStore.loading ? 'Додавання...' : 'Додати в кошик' }}
     </button>
   </div>
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
+import { useAuthStore } from '../stores/authStore'
+import { useCartStore } from '../stores/cartStore'
 
-defineProps({
+const props = defineProps({
   product: {
     type: Object,
     required: true,
   },
 })
+
+const router = useRouter()
+const authStore = useAuthStore()
+const cartStore = useCartStore()
+
+async function handleAddToCart() {
+  if (!authStore.isLoggedIn) {
+    router.push('/login')
+    return
+  }
+
+  await cartStore.addToCart(authStore.user.uid, props.product)
+}
 </script>
