@@ -7,6 +7,8 @@ import RegisterPage from '../pages/RegisterPage.vue'
 import ProfilePage from '../pages/ProfilePage.vue'
 import ProductPage from '../pages/ProductPage.vue'
 import CartPage from '../pages/CartPage.vue'
+import CheckoutPage from '../pages/CheckoutPage.vue'
+import MyOrdersPage from '../pages/MyOrdersPage.vue'
 
 const routes = [
   {
@@ -44,6 +46,16 @@ const routes = [
     path: '/cart',
     name: 'cart',
     component: CartPage,
+  },
+  {
+    path: '/checkout',
+    name: 'checkout',
+    component: CheckoutPage,
+  },
+  {
+    path: '/my-orders',
+    name: 'my-orders',
+    component: MyOrdersPage,
   },
 ]
 
