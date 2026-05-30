@@ -5,7 +5,7 @@
     <div class="mx-auto flex max-w-7xl gap-4 px-4 py-4">
       <Sidebar />
 
-      <main class="flex-1">
+      <main class="min-w-0 flex-1">
         <RouterView />
       </main>
     </div>

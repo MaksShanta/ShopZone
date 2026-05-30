@@ -3,11 +3,21 @@
     <h2 class="mb-3 font-bold">Категорії</h2>
 
     <ul class="space-y-2">
-      <li class="cursor-pointer hover:text-green-600">Смартфони</li>
-      <li class="cursor-pointer hover:text-green-600">Ноутбуки</li>
-      <li class="cursor-pointer hover:text-green-600">Побутова техніка</li>
-      <li class="cursor-pointer hover:text-green-600">Товари для дому</li>
-      <li class="cursor-pointer hover:text-green-600">Ігрова техніка</li>
+      <li
+        v-for="category in productStore.categories"
+        :key="category"
+        @click="productStore.setCategory(category)"
+        class="cursor-pointer rounded px-2 py-1 hover:bg-green-50 hover:text-green-600"
+        :class="productStore.selectedCategory === category ? 'bg-green-100 text-green-700' : ''"
+      >
+        {{ category }}
+      </li>
     </ul>
   </aside>
 </template>
+
+<script setup>
+import { useProductStore } from '../stores/productStore'
+
+const productStore = useProductStore()
+</script>
