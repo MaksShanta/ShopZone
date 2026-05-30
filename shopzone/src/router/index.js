@@ -10,6 +10,12 @@ import CartPage from '../pages/CartPage.vue'
 import CheckoutPage from '../pages/CheckoutPage.vue'
 import MyOrdersPage from '../pages/MyOrdersPage.vue'
 
+
+import AdminDashboard from '../admin/AdminDashboard.vue'
+import AdminProducts from '../admin/AdminProducts.vue'
+import { useAuthStore } from '../stores/authStore'
+
+
 const routes = [
   {
     path: '/',
@@ -57,11 +63,36 @@ const routes = [
     name: 'my-orders',
     component: MyOrdersPage,
   },
+
+
+
+  {
+    path: '/admin',
+    name: 'admin',
+    component: AdminDashboard,
+    meta: { requiresAdmin: true },
+  },
+  {
+    path: '/admin/products',
+    name: 'admin-products',
+    component: AdminProducts,
+    meta: { requiresAdmin: true },
+  },
+
 ]
+
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+})
+
+router.beforeEach((to) => {
+  const authStore = useAuthStore()
+
+  if (to.meta.requiresAdmin && !authStore.isAdmin) {
+    return '/login'
+  }
 })
 
 export default router

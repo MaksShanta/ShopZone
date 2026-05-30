@@ -30,6 +30,15 @@
         Мої замовлення
       </RouterLink>
 
+      
+      <RouterLink
+        v-if="authStore.isAdmin"
+        to="/admin"
+        class="hover:underline"
+      >
+        Адмін
+      </RouterLink>
+   
       <RouterLink
         v-if="!authStore.isLoggedIn"
         to="/login"
