@@ -7,6 +7,7 @@ import {
   watchAuth,
   getUserProfile,
 } from '../services/authService'
+import { useNotificationStore } from './notificationStore'
 
 function getFriendlyErrorMessage(error) {
   switch (error.code) {
@@ -65,14 +66,19 @@ export const useAuthStore = defineStore('auth', {
     },
 
     async login(email, password) {
+      const notificationStore = useNotificationStore()
+
       this.loading = true
       this.error = null
 
       try {
         this.user = await loginWithEmail(email, password)
         this.profile = await getUserProfile(this.user.uid)
+
+        notificationStore.show('Вхід виконано успішно')
       } catch (error) {
-        this.error = getFriendlyErrorMessage(error)
+        this.error = error.message
+        notificationStore.show('Помилка входу', 'error')
       } finally {
         this.loading = false
       }
