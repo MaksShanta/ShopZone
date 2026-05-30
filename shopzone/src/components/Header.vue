@@ -23,6 +23,14 @@
       </RouterLink>
 
       <RouterLink
+        v-if="authStore.isLoggedIn"
+        to="/my-orders"
+        class="hover:underline"
+      >
+        Мої замовлення
+      </RouterLink>
+
+      <RouterLink
         v-if="!authStore.isLoggedIn"
         to="/login"
         class="hover:underline"
