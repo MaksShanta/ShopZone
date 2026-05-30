@@ -11,6 +11,7 @@
     </div>
 
     <Footer />
+    <Toast />
   </div>
 </template>
 
@@ -20,4 +21,5 @@ import { RouterView } from 'vue-router'
 import Header from '../components/Header.vue'
 import Sidebar from '../components/Sidebar.vue'
 import Footer from '../components/Footer.vue'
+import Toast from '../components/Toast.vue'
 </script>

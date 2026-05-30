@@ -6,6 +6,7 @@ import {
 } from '../services/orderService'
 
 import { useCartStore } from './cartStore'
+import { useNotificationStore } from './notificationStore'
 
 export const useOrderStore = defineStore('orders', {
   state: () => ({
@@ -13,14 +14,14 @@ export const useOrderStore = defineStore('orders', {
     orderItems: {},
     loading: false,
     error: null,
-    successMessage: null,
   }),
 
   actions: {
     async makeOrder(userId, userInfo, cartItems, totalPrice) {
+      const notificationStore = useNotificationStore()
+
       this.loading = true
       this.error = null
-      this.successMessage = null
 
       try {
         const orderId = await createOrder(
@@ -33,10 +34,13 @@ export const useOrderStore = defineStore('orders', {
         const cartStore = useCartStore()
         await cartStore.clearUserCart(userId)
 
-        this.successMessage = `Замовлення №${orderId} успішно створено`
+        notificationStore.show('Замовлення успішно створено')
+
         return orderId
       } catch (error) {
         this.error = error.message
+        notificationStore.show('Не вдалося створити замовлення', 'error')
+
         return null
       } finally {
         this.loading = false

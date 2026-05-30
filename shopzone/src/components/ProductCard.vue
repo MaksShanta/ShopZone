@@ -39,11 +39,11 @@
     </p>
 
     <button
-    @click="handleAddToCart"
-    class="mt-4 w-full rounded bg-green-600 py-2 text-white hover:bg-green-700 disabled:bg-gray-400"
-    :disabled="!product.inStock || cartStore.loading"
+      @click="handleAddToCart"
+      class="mt-4 w-full rounded bg-green-600 py-2 text-white hover:bg-green-700 disabled:cursor-not-allowed disabled:bg-gray-400"
+      :disabled="!product.inStock || cartStore.loading"
     >
-    {{ cartStore.loading ? 'Додавання...' : 'Додати в кошик' }}
+      {{ cartStore.loading ? 'Додавання...' : 'Додати в кошик' }}
     </button>
   </div>
 </template>

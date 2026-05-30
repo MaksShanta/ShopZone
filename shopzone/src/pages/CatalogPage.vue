@@ -39,11 +39,10 @@
     </div>
 
     <div v-if="productStore.loading" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      <div
+      <SkeletonProductCard
         v-for="item in 6"
         :key="item"
-        class="h-80 animate-pulse rounded bg-gray-200"
-      ></div>
+      />
     </div>
 
     <p v-else-if="productStore.error" class="rounded bg-red-100 p-4 text-red-700">
@@ -68,6 +67,7 @@
 import { onMounted } from 'vue'
 import { useProductStore } from '../stores/productStore'
 import ProductList from '../components/ProductList.vue'
+import SkeletonProductCard from '../components/SkeletonProductCard.vue'
 
 const productStore = useProductStore()
 
