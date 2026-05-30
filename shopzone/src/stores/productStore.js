@@ -13,7 +13,50 @@ export const useProductStore = defineStore('products', {
     currentProduct: null,
     loading: false,
     error: null,
+
+    searchQuery: '',
+    selectedCategory: 'Усі',
+    sortBy: 'default',
   }),
+
+  getters: {
+    categories: (state) => {
+      const uniqueCategories = state.products.map((product) => product.category)
+      return ['Усі', ...new Set(uniqueCategories)]
+    },
+
+    filteredProducts: (state) => {
+      let result = [...state.products]
+
+      if (state.selectedCategory !== 'Усі') {
+        result = result.filter(
+          (product) => product.category === state.selectedCategory
+        )
+      }
+
+      if (state.searchQuery.trim()) {
+        const query = state.searchQuery.toLowerCase()
+
+        result = result.filter((product) =>
+          product.title.toLowerCase().includes(query)
+        )
+      }
+
+      if (state.sortBy === 'price-asc') {
+        result.sort((a, b) => a.price - b.price)
+      }
+
+      if (state.sortBy === 'price-desc') {
+        result.sort((a, b) => b.price - a.price)
+      }
+
+      if (state.sortBy === 'rating') {
+        result.sort((a, b) => b.rating - a.rating)
+      }
+
+      return result
+    },
+  },
 
   actions: {
     async fetchProducts() {
@@ -40,6 +83,18 @@ export const useProductStore = defineStore('products', {
       } finally {
         this.loading = false
       }
+    },
+
+    setSearchQuery(value) {
+      this.searchQuery = value
+    },
+
+    setCategory(category) {
+      this.selectedCategory = category
+    },
+
+    setSortBy(value) {
+      this.sortBy = value
     },
 
     async addProduct(productData) {
