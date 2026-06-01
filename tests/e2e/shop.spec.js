@@ -4,7 +4,7 @@ test('відкривається головна сторінка', async ({ page
   await page.goto('/')
 
   await expect(
-    page.getByText('ShopZone')
+    page.getByRole('heading', { name: 'Ласкаво просимо до ShopZone' })
   ).toBeVisible()
 })
 
@@ -21,14 +21,13 @@ test('відкривається каталог', async ({ page }) => {
 test('пошук товару працює', async ({ page }) => {
   await page.goto('/catalog')
 
-  const searchInput =
-    page.getByPlaceholder('Я шукаю...')
+  const searchInput = page.getByPlaceholder('Я шукаю...')
 
   await searchInput.fill('Samsung')
   await searchInput.press('Enter')
 
   await expect(
-    page.getByText('Samsung')
+    page.getByRole('link', { name: /Смартфон Samsung Galaxy A55/i }).first()
   ).toBeVisible()
 })
 
