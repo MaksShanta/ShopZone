@@ -1,3 +1,5 @@
+import 'dotenv/config'
+
 import { initializeApp } from 'firebase/app'
 import {
   getFirestore,
@@ -7,13 +9,12 @@ import {
 } from 'firebase/firestore'
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDQ1eV_ek938PatZRmn8xagPp6imKAFUus",
-  authDomain: "shopzone-ed450.firebaseapp.com",
-  projectId: "shopzone-ed450",
-  storageBucket: "shopzone-ed450.firebasestorage.app",
-  messagingSenderId: "858915821245",
-  appId: "1:858915821245:web:f0d6e6ba7b2ab73132c9d4",
-  measurementId: "G-TEPJDWKLMB"
+  apiKey: process.env.VITE_FIREBASE_API_KEY,
+  authDomain: process.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.VITE_FIREBASE_APP_ID,
 }
 
 const app = initializeApp(firebaseConfig)
