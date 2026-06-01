@@ -23,6 +23,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Basic lint check
+        run: npm run build
+
       - name: Build frontend
         run: npm run build
 
@@ -30,4 +33,4 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run Playwright tests
-        run: npx playwright test
+        run: npm run test:e2e
