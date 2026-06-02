@@ -1,114 +1,72 @@
 <template>
-  <header class="sticky top-0 z-50 bg-green-600 text-white shadow">
+  <header class="sticky top-0 z-50 bg-[#221f1f] text-white shadow">
     <div class="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3">
       <button
-        class="rounded bg-green-700 px-3 py-2 md:hidden"
+        class="rounded px-3 py-2 text-2xl hover:bg-white/10 md:hidden"
         @click="isMenuOpen = !isMenuOpen"
       >
         ☰
       </button>
 
-      <RouterLink to="/" class="text-2xl font-bold">
+      <RouterLink to="/" class="text-2xl font-bold text-white">
         ShopZone
       </RouterLink>
 
       <RouterLink
         to="/catalog"
-        class="hidden rounded bg-green-700 px-4 py-2 hover:bg-green-800 md:block"
+        class="hidden rounded bg-green-600 px-4 py-2 font-medium hover:bg-green-700 md:block"
       >
-        Каталог
+        ☰ Каталог
       </RouterLink>
 
-      <input
-        v-model="search"
-        @keyup.enter="goToCatalog"
-        type="text"
-        placeholder="Я шукаю..."
-        class="min-w-0 flex-1 rounded px-4 py-2 text-black outline-none"
-      />
+      <div class="flex min-w-0 flex-1 overflow-hidden rounded bg-white">
+        <input
+          v-model="search"
+          @keyup.enter="goToCatalog"
+          type="text"
+          placeholder="Я шукаю..."
+          class="min-w-0 flex-1 bg-white px-4 py-2 text-black outline-none placeholder:text-gray-500"
+        />
 
-      <nav class="hidden items-center gap-4 md:flex">
-        <RouterLink to="/cart" class="hover:underline">
-          Кошик ({{ cartStore.totalItems }})
-        </RouterLink>
+        <button
+          @click="goToCatalog"
+          class="bg-green-600 px-5 font-medium text-white hover:bg-green-700"
+        >
+          Знайти
+        </button>
+      </div>
+
+      <nav class="hidden items-center gap-4 text-sm md:flex">
+        <button
+          @click="openCart"
+          class="hover:text-green-400"
+        >
+          🛒 Кошик ({{ cartStore.totalItems }})
+        </button>
 
         <RouterLink
           v-if="authStore.isLoggedIn"
           to="/my-orders"
-          class="hover:underline"
+          class="hover:text-green-400"
         >
-          Мої замовлення
+          📦 Замовлення
         </RouterLink>
 
         <RouterLink
           v-if="authStore.isAdmin"
           to="/admin"
-          class="hover:underline"
+          class="hover:text-green-400"
         >
-          Адмін
+          ⚙ Адмін
         </RouterLink>
 
-        <RouterLink
-          v-if="!authStore.isLoggedIn"
-          to="/login"
-          class="hover:underline"
+        <button
+          @click="uiStore.openAuthModal()"
+          class="hover:text-green-400"
         >
-          Увійти
-        </RouterLink>
-
-        <RouterLink v-else to="/profile" class="hover:underline">
-          Профіль
-        </RouterLink>
+          👤 {{ authStore.isLoggedIn ? 'Профіль' : 'Увійти' }}
+        </button>
       </nav>
-    </div>
-
-    <div
-      v-if="isMenuOpen"
-      class="space-y-2 bg-green-700 px-4 py-3 md:hidden"
-    >
-      <RouterLink to="/catalog" class="block" @click="closeMenu">
-        Каталог
-      </RouterLink>
-
-      <RouterLink to="/cart" class="block" @click="closeMenu">
-        Кошик ({{ cartStore.totalItems }})
-      </RouterLink>
-
-      <RouterLink
-        v-if="authStore.isLoggedIn"
-        to="/my-orders"
-        class="block"
-        @click="closeMenu"
-      >
-        Мої замовлення
-      </RouterLink>
-
-      <RouterLink
-        v-if="authStore.isAdmin"
-        to="/admin"
-        class="block"
-        @click="closeMenu"
-      >
-        Адмін
-      </RouterLink>
-
-      <RouterLink
-        v-if="!authStore.isLoggedIn"
-        to="/login"
-        class="block"
-        @click="closeMenu"
-      >
-        Увійти
-      </RouterLink>
-
-      <RouterLink
-        v-else
-        to="/profile"
-        class="block"
-        @click="closeMenu"
-      >
-        Профіль
-      </RouterLink>
     </div>
   </header>
 </template>
@@ -120,11 +78,14 @@ import { RouterLink, useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/authStore'
 import { useCartStore } from '../stores/cartStore'
 import { useProductStore } from '../stores/productStore'
+import { useUiStore } from '../stores/uiStore'
 
 const router = useRouter()
+
 const authStore = useAuthStore()
 const cartStore = useCartStore()
 const productStore = useProductStore()
+const uiStore = useUiStore()
 
 const isMenuOpen = ref(false)
 const search = ref(productStore.searchQuery)
@@ -143,7 +104,11 @@ function goToCatalog() {
   router.push('/catalog')
 }
 
-function closeMenu() {
-  isMenuOpen.value = false
+async function openCart() {
+  if (authStore.user) {
+    await cartStore.fetchCart(authStore.user.uid)
+  }
+
+  uiStore.openCartModal()
 }
 </script>

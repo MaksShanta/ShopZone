@@ -12,6 +12,8 @@
 
     <Footer />
     <Toast />
+    <CartModal />
+    <AuthModal />
   </div>
 </template>
 
@@ -22,4 +24,6 @@ import Header from '../components/Header.vue'
 import Sidebar from '../components/Sidebar.vue'
 import Footer from '../components/Footer.vue'
 import Toast from '../components/Toast.vue'
+import CartModal from '../components/CartModal.vue'
+import AuthModal from '../components/AuthModal.vue'
 </script>
