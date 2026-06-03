@@ -1,15 +1,9 @@
 <template>
   <div class="group relative flex min-h-[390px] flex-col rounded bg-white p-3 shadow transition hover:shadow-lg">
-    <button
-      class="absolute right-3 top-3 z-10 rounded-full bg-white p-2 text-xl shadow hover:text-red-500"
-      title="Додати в обране"
-    >
-      ♡
-    </button>
 
     <div
       v-if="product.oldPrice && product.oldPrice > product.price"
-      class="absolute left-3 top-3 z-10 rounded bg-red-600 px-2 py-1 text-xs font-bold text-white"
+      class="absolute left-2 top-2 z-10 rounded bg-red-600 px-2 py-1 text-xs font-bold text-white"
     >
       Акція
     </div>
@@ -76,12 +70,6 @@
         <span>{{ cartStore.loading ? 'Додавання...' : 'Купити' }}</span>
       </button>
 
-      <button
-        class="rounded border px-3 py-2 text-lg hover:bg-gray-100"
-        title="Порівняти"
-      >
-        ⇄
-      </button>
     </div>
   </div>
 </template>

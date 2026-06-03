@@ -91,7 +91,7 @@
             @click="closeMenu"
             class="flex items-center justify-center gap-2 rounded bg-green-600 px-4 py-3 font-bold text-white hover:bg-green-700"
           >
-            ⬚ Каталог товарів
+            ☰ Каталог товарів
           </RouterLink>
         </div>
 
