@@ -11,7 +11,7 @@
         <li
           v-for="category in productStore.categories"
           :key="category"
-          @click="productStore.setCategory(category)"
+          @click="selectCategory(category)"
           class="cursor-pointer px-4 py-3 transition hover:bg-green-50 hover:text-green-600"
           :class="
             productStore.selectedCategory === category
@@ -27,7 +27,17 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
 import { useProductStore } from '../stores/productStore'
 
+const router = useRouter()
 const productStore = useProductStore()
+
+function selectCategory(category) {
+  productStore.setCategory(category)
+
+  router.push({
+    name: 'catalog'
+  })
+}
 </script>
