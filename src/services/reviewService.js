@@ -14,16 +14,12 @@ export async function addReview(productId, user, profile, reviewData) {
     throw new Error('Користувач не авторизований')
   }
 
-  if (!reviewData.comment.trim()) {
-    throw new Error('Коментар не може бути порожнім')
-  }
-
   const review = {
     productId: String(productId),
     userId: user.uid,
     userName: profile?.name || user.displayName || user.email || 'Користувач',
     rating: Number(reviewData.rating),
-    comment: reviewData.comment.trim(),
+    comment: reviewData.comment?.trim() || '',
     createdAt: serverTimestamp(),
   }
 
